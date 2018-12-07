@@ -1,0 +1,81 @@
+README for deep feature flow work:
+
+Deep-Feature-Flow file saves all the codes and files for detection
+Deep-Feature-Flow-Segmentation file saves all the codes and files for segmentation ( still needs some work to run deeplab in DFF, check out disk2/code/DeepLab/models/research/deeplab )
+
+
+
+./data/cache  saves all the groundtruth files in .pkl format
+
+./stored_data  saves reading data sequences txt 
+
+./output saves output result of training 
+
+./output/resnet_v1..../DET_train_30classes_VID_train_15frames saves trained model parameters
+(saved means first experiment, existing means second experiment using the same parameters)
+
+
+./output/resnet_v1..../VID_val_videos stored results file( .txt ), denoting each detected BB; and 2 .pkl files which is used to evaluate the results after detection. Noticed, you should delete these .pkl files each time if you want to perform another tests.
+
+
+-------------------
+when you run test scripts, you should delete 2 .pkl files in output/......./VID_val_videos in order to rerun the evaluating process
+
+---------------------
+
+
+
+EVERYDAY USING note:
+
+dff_rfcn/config/config.py
+line 131 -9  _______________________ -7
+
+
+
+
+
+
+
+
+code for extracting optical flow:
+
+----------------------
+
+########################
+    # ### print out OF
+    # ctx = [mx.gpu(int(i)) for i in cfg.gpus.split(',')]
+    # #all_layers = cur_sym.get_internals()
+    # sym_flow = cur_sym['flow_grid_output']
+    # mod_test = mx.mod.Module(symbol = sym_flow, data_names=['data','data_key'], label_names = None, context = ctx)
+    # test_data = [TestLoader(roidbs[0], cfg, batch_size=1, shuffle=shuffle, has_rpn=has_rpn)][0]
+    #
+    # # for MutableModule
+    # #mod_test.bind(for_training = False, data_shapes = [[('data',(1L, 3L, 562L, 1000L)),('data_key',(1L, 3L, 562L, 1000L))]])
+    #
+    # #for mx.mod.Module
+    # mod_test.bind(for_training = False, data_shapes = [('data',(1L, 3L, 562L, 1000L)),('data_key',(1L, 3L, 562L, 1000L))])
+    # arg_params, aux_params = load_param(prefix, epoch, process=True)
+    # mod_test.set_params(arg_params,aux_params)
+    # databatch = test_data.next()[2].data
+    # dataiter1 = mx.io.NDArrayIter(data = {'data1': databatch[0][0], 'data2':databatch[0][2]} ,label = None, batch_size = 1)
+    # output = mod_test.iter_predict(dataiter1)
+    # OF = output.next()    # run generator by executing .next()
+#################--------------------------------------
+    # source code from base_module.py. iter_predict
+    # num_batch = None
+    # eval_data = dataiter1
+    # for nbatch, eval_batch in enumerate(eval_data):
+    #     if num_batch is not None and nbatch == num_batch:
+    #         break
+    #
+    #     mod_test.forward(eval_batch, is_train=False)
+    #     pad = eval_batch.pad
+    #     outputs = [out[0:out.shape[0] - pad] for out in mod_test.get_outputs()]
+
+
+-----------------------------------------
+
+
+
+
+
